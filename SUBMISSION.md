@@ -30,3 +30,7 @@ The largest friction remains free-tier onboarding and sparse market availability
 ## Disclaimer
 
 SharpSignal is analysis software only. It does not execute trades, accept wagers, or custody funds.
+
+## AI-use disclosure
+
+The human participant owns this submission, selected the task, directed the product scope, authorized account actions, and approved submission through their authenticated Superteam account. Codex was used as an AI development and browser-automation tool.
