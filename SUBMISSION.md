@@ -16,10 +16,10 @@ The interface exposes the probability path, the exact rule evaluation, and an ap
 
 ## Links
 
-- Live application: TBD
-- Public repository: TBD
-- Demo video: TBD
-- Technical documentation: README.md
+- Live application: https://sharpsignal-txline.netlify.app
+- Public repository: https://github.com/brownpaulbxgdj8402-ux/sharpsignal-txline
+- Demo video: https://sharpsignal-txline.netlify.app/demo.webm
+- Technical documentation: https://github.com/brownpaulbxgdj8402-ux/sharpsignal-txline/blob/main/README.md
 
 ## TxLINE feedback
 
