@@ -2,6 +2,9 @@
 
 SharpSignal is an autonomous TxLINE movement monitor built for the TxODDS World Cup Hackathon Trading Tools and Agents track. It scans fixtures and odds on a fixed schedule, normalizes each 1X2 market to true implied probability, and logs only movements that cross a deterministic threshold.
 
+- Live application: https://sharpsignal-txline.netlify.app
+- Demo video: https://sharpsignal-txline.netlify.app/demo.webm
+
 ## Strategy
 
 For every accepted snapshot:
