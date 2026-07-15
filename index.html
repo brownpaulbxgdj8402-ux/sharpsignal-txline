@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SharpSignal autonomously detects material probability movements in live TxLINE sports markets.">
+  <title>SharpSignal - Autonomous TxLINE monitor</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="SharpSignal home">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>SharpSignal</span>
+    </a>
+    <div class="agent-state" aria-live="polite">
+      <span class="status-dot"></span>
+      <span id="agent-label">AGENT RUNNING</span>
+      <span class="divider"></span>
+      <span class="muted">Next scan</span>
+      <strong id="countdown">00:60</strong>
+    </div>
+    <button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle color theme">◐</button>
+  </header>
+
+  <main>
+    <section class="control-strip" aria-label="Monitor controls">
+      <div>
+        <p class="eyebrow">TxLINE monitoring desk</p>
+        <h1>Material moves. Zero noise.</h1>
+      </div>
+      <div class="controls">
+        <div class="segmented" role="group" aria-label="Data mode">
+          <button type="button" class="segment active" data-mode="live" aria-pressed="true">Live</button>
+          <button type="button" class="segment" data-mode="replay" aria-pressed="false">Replay</button>
+        </div>
+        <label class="threshold-control" for="threshold">
+          <span>Trigger</span>
+          <strong id="threshold-value">4.0 pp</strong>
+          <input id="threshold" type="range" min="2" max="10" step="0.5" value="4">
+        </label>
+        <button class="scan-button" id="scan-now" type="button">Run scan</button>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Agent metrics">
+      <div class="metric">
+        <span>Fixtures monitored</span>
+        <strong id="fixture-count">0</strong>
+        <small id="feed-label">Connecting to TxLINE</small>
+      </div>
+      <div class="metric">
+        <span>Signals this session</span>
+        <strong id="signal-count">0</strong>
+        <small id="signal-delta">Waiting for baseline</small>
+      </div>
+      <div class="metric">
+        <span>Scan integrity</span>
+        <strong id="integrity-score">--</strong>
+        <small>Schema + overround checks</small>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <div class="chart-workspace">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Probability monitor</p>
+            <h2 id="match-title">Waiting for fixture data</h2>
+          </div>
+          <label for="fixture-select" class="select-label">
+            <span class="sr-only">Select fixture</span>
+            <select id="fixture-select" aria-label="Select fixture"></select>
+          </label>
+        </div>
+        <div class="legend" id="chart-legend" aria-label="Chart legend"></div>
+        <div class="chart-shell">
+          <svg id="probability-chart" viewBox="0 0 900 360" role="img" aria-labelledby="chart-title chart-desc">
+            <title id="chart-title">Normalized outcome probability over time</title>
+            <desc id="chart-desc">A line chart showing probability snapshots for the selected fixture.</desc>
+          </svg>
+          <div class="chart-empty" id="chart-empty">The first scan establishes a baseline.</div>
+        </div>
+      </div>
+
+      <aside class="decision-panel" aria-label="Latest decision trace">
+        <div class="section-heading compact">
+          <div>
+            <p class="eyebrow">Decision trace</p>
+            <h2>Why the agent acted</h2>
+          </div>
+          <span class="decision-badge" id="decision-badge">BASELINE</span>
+        </div>
+        <ol class="rule-trace" id="rule-trace">
+          <li><span>01</span><div><strong>Input validation</strong><p>Waiting for normalized TxLINE prices.</p></div></li>
+          <li><span>02</span><div><strong>Movement test</strong><p>Compare with the previous accepted snapshot.</p></div></li>
+          <li><span>03</span><div><strong>Signal decision</strong><p>Emit only when the configured threshold is crossed.</p></div></li>
+        </ol>
+        <dl class="decision-facts">
+          <div><dt>Strategy</dt><dd>Absolute probability delta</dd></div>
+          <div><dt>Window</dt><dd id="window-value">60 seconds</dd></div>
+          <div><dt>Execution</dt><dd>Observe + log only</dd></div>
+        </dl>
+      </aside>
+    </section>
+
+    <section class="ledger" aria-labelledby="ledger-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Append-only ledger</p>
+          <h2 id="ledger-title">Signal history</h2>
+        </div>
+        <button class="text-button" id="export-log" type="button">Export JSON</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Time</th><th>Fixture</th><th>Outcome</th><th>Move</th><th>Severity</th><th>Rule</th></tr></thead>
+          <tbody id="signal-ledger"><tr><td colspan="6" class="empty-cell">No material movements recorded yet.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="architecture" aria-label="Architecture">
+      <div><span>01</span><strong>TxLINE</strong><small>Fixture + odds snapshots</small></div>
+      <i aria-hidden="true">→</i>
+      <div><span>02</span><strong>Normalizer</strong><small>Overround-adjusted probability</small></div>
+      <i aria-hidden="true">→</i>
+      <div><span>03</span><strong>Rule engine</strong><small>Deterministic threshold test</small></div>
+      <i aria-hidden="true">→</i>
+      <div><span>04</span><strong>Signal ledger</strong><small>Auditable output, no execution</small></div>
+    </section>
+  </main>
+
+  <footer>
+    <span>SharpSignal · TxODDS World Cup Hackathon</span>
+    <span>Analysis only · No wagering or order execution</span>
+  </footer>
+  <script src="replay-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
